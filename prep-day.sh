@@ -26,12 +26,12 @@ if [[ 1 -gt "$1" || 25 -lt "$1" ]]; then
 fi
 
 SESSION=$(cat .session)
-if test -z "$1"; then
+if test -z "$SESSION"; then
   echo "Must set the session from the Advent of Code site"
   exit 1
 fi
 
-if test -e ".data/$1.txt"; then
+if test -e ".input/$1.txt"; then
   echo "Data already exists for day $1, skipping download..."
 else
   echo "Downloading data for day $1 to .input/$1.txt..."
