@@ -1,4 +1,4 @@
-#![feature(slice_group_by)]
+#![feature(slice_group_by, array_chunks, hash_drain_filter)]
 
 use std::env;
 use std::io::{BufRead, BufReader};
@@ -6,9 +6,11 @@ use std::time::{Duration, Instant};
 
 use day1::Day1;
 use day2::Day2;
+use day3::Day3;
 
 mod day1;
 mod day2;
+mod day3;
 
 /// Reads the lines from the input file into a relevant
 /// model of the data for the day's solution.
@@ -40,6 +42,7 @@ fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn 
     match day {
         1 => Box::new(Day1::from_lines(lines)),
         2 => Box::new(Day2::from_lines(lines)),
+        3 => Box::new(Day3::from_lines(lines)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }
