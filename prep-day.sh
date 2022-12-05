@@ -44,10 +44,12 @@ if test -e "src/day$1.rs"; then
   echo "src/day$1.rs already exists, skipping..."
 else
   echo "Creating boilerplate module for day $1 at src/day$1.rs..."
-  echo "Remember to update main.rs:"
-  echo "  - Add 'mod day$1;'"
-  echo "  - Add 'use day$1::Day$1;'"
-  echo "  - Update 'get_day_solution' to use 'Day$1'"
+  echo "Remember to add the following lines in main.rs:"
+  echo "In the file header:"
+  echo "  mod day$1;"
+  echo "  use day$1::Day$1;"
+  echo "In get_day_solution():"
+  echo "  $1 => Box::new(Day$1::from_lines(lines)),"
 
   cat <<-EOF > "src/day$1.rs"
 use crate::{DaySolution, FromInput};
