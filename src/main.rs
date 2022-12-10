@@ -1,22 +1,37 @@
-#![feature(slice_group_by, array_chunks, hash_drain_filter, array_windows)]
+#![feature(
+    slice_group_by,
+    iter_array_chunks,
+    array_chunks,
+    hash_drain_filter,
+    array_windows
+)]
 
 use std::env;
 use std::io::{BufRead, BufReader};
 use std::time::{Duration, Instant};
 
 use day1::Day1;
+use day10::Day10;
 use day2::Day2;
 use day3::Day3;
 use day4::Day4;
 use day5::Day5;
 use day6::Day6;
+use day7::Day7;
+use day8::Day8;
+use day9::Day9;
 
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
+mod day8;
+mod day9;
+mod util;
 
 /// Reads the lines from the input file into a relevant
 /// model of the data for the day's solution.
@@ -52,6 +67,10 @@ fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn 
         4 => Box::new(Day4::from_lines(lines)),
         5 => Box::new(Day5::from_lines(lines)),
         6 => Box::new(Day6::from_lines(lines)),
+        7 => Box::new(Day7::from_lines(lines)),
+        8 => Box::new(Day8::from_lines(lines)),
+        9 => Box::new(Day9::from_lines(lines)),
+        10 => Box::new(Day10::from_lines(lines)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }
