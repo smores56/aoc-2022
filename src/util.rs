@@ -56,6 +56,7 @@ impl From<(isize, isize)> for Coordinates {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Matrix<T> {
     pub items: Vec<Vec<T>>,
 }
@@ -74,6 +75,20 @@ impl<T> Matrix<T> {
             x: self.items.get(0).map(|row| row.len()).unwrap_or(0) as isize,
             y: self.items.len() as isize,
         }
+    }
+
+    pub fn in_bounds(&self, coords: Coordinates) -> bool {
+        coords.x >= 0 && coords.x < self.size().x && coords.y >= 0 && coords.y < self.size().y
+    }
+
+    pub fn neighbors(&self, coords: Coordinates) -> Vec<Coordinates> {
+        Direction::ALL
+            .into_iter()
+            .filter_map(|direction| {
+                Some(coords + direction.normal_vector())
+                    .filter(|new_coords| self.in_bounds(*new_coords))
+            })
+            .collect()
     }
 }
 
