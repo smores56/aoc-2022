@@ -10,20 +10,6 @@ use std::env;
 use std::io::{BufRead, BufReader};
 use std::time::{Duration, Instant};
 
-use day1::Day1;
-use day10::Day10;
-use day11::Day11;
-use day12::Day12;
-use day13::Day13;
-use day2::Day2;
-use day3::Day3;
-use day4::Day4;
-use day5::Day5;
-use day6::Day6;
-use day7::Day7;
-use day8::Day8;
-use day9::Day9;
-
 mod day1;
 mod day10;
 mod day11;
@@ -67,19 +53,19 @@ fn load_input(day: usize) -> impl Iterator<Item = String> {
 /// Gets the solution for the given day as a trait object.
 fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn DaySolution> {
     match day {
-        1 => Box::new(Day1::from_lines(lines)),
-        2 => Box::new(Day2::from_lines(lines)),
-        3 => Box::new(Day3::from_lines(lines)),
-        4 => Box::new(Day4::from_lines(lines)),
-        5 => Box::new(Day5::from_lines(lines)),
-        6 => Box::new(Day6::from_lines(lines)),
-        7 => Box::new(Day7::from_lines(lines)),
-        8 => Box::new(Day8::from_lines(lines)),
-        9 => Box::new(Day9::from_lines(lines)),
-        10 => Box::new(Day10::from_lines(lines)),
-        11 => Box::new(Day11::from_lines(lines)),
-        12 => Box::new(Day12::from_lines(lines)),
-        13 => Box::new(Day13::from_lines(lines)),
+        1 => Box::new(day1::Day1::from_lines(lines)),
+        2 => Box::new(day2::Day2::from_lines(lines)),
+        3 => Box::new(day3::Day3::from_lines(lines)),
+        4 => Box::new(day4::Day4::from_lines(lines)),
+        5 => Box::new(day5::Day5::from_lines(lines)),
+        6 => Box::new(day6::Day6::from_lines(lines)),
+        7 => Box::new(day7::Day7::from_lines(lines)),
+        8 => Box::new(day8::Day8::from_lines(lines)),
+        9 => Box::new(day9::Day9::from_lines(lines)),
+        10 => Box::new(day10::Day10::from_lines(lines)),
+        11 => Box::new(day11::Day11::from_lines(lines)),
+        12 => Box::new(day12::Day12::from_lines(lines)),
+        13 => Box::new(day13::Day13::from_lines(lines)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }

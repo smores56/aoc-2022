@@ -25,13 +25,12 @@ rm src/day*.rs
 ```
 
 Also, in the `src/main.rs` file, you'll need to delete all `mod dayN;`
-declarations and `use dayN::DayN;` statements, as well as reset the
-`get_day_solution` implementation to the following:
+declarations and reset the `get_day_solution` implementation to the following:
 
 ```rust
 fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn DaySolution> {
     match day {
-        // 1 => Box::new(Day1::from_lines(input)),
+        // 1 => Box::new(day1::Day1::from_lines(input)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }

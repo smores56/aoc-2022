@@ -47,9 +47,8 @@ else
   echo "Remember to add the following lines in main.rs:"
   echo "In the file header:"
   echo "  mod day$1;"
-  echo "  use day$1::Day$1;"
   echo "In get_day_solution():"
-  echo "  $1 => Box::new(Day$1::from_lines(lines)),"
+  echo "  $1 => Box::new(day$1::Day$1::from_lines(lines)),"
 
   cat <<-EOF > "src/day$1.rs"
 use crate::{DaySolution, FromInput};
