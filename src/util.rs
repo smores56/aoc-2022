@@ -7,6 +7,30 @@ pub struct Coordinates {
     pub y: isize,
 }
 
+impl Coordinates {
+    pub fn direction(&self) -> Option<Direction> {
+        match (self.x, self.y) {
+            (0, y) if y < 0 => Some(Direction::Up),
+            (0, y) if y > 0 => Some(Direction::Down),
+            (x, 0) if x < 0 => Some(Direction::Left),
+            (x, 0) if x > 0 => Some(Direction::Right),
+            _other => None,
+        }
+    }
+
+    pub fn walk_to(&self, to: Coordinates) -> Option<impl Iterator<Item = Coordinates>> {
+        let direction = (to - *self).direction()?.normal_vector();
+
+        Some(std::iter::successors(Some(*self), move |coords| {
+            if coords == &to {
+                None
+            } else {
+                Some(*coords + direction)
+            }
+        }))
+    }
+}
+
 impl std::ops::Add for Coordinates {
     type Output = Coordinates;
 
@@ -124,6 +148,38 @@ impl<T> Index<Coordinates> for Matrix<T> {
 impl<T> IndexMut<Coordinates> for Matrix<T> {
     fn index_mut(&mut self, coordinates: Coordinates) -> &mut Self::Output {
         &mut self.items[coordinates.y as usize][coordinates.x as usize]
+    }
+}
+
+#[derive(Debug)]
+pub struct BoundingBox {
+    pub top_left: Coordinates,
+    pub bottom_right: Coordinates,
+}
+
+impl BoundingBox {
+    pub fn for_coordinates<'c>(all_coords: impl Iterator<Item = &'c Coordinates>) -> Self {
+        let mut top_left = Coordinates {
+            x: isize::MAX,
+            y: isize::MAX,
+        };
+        let mut bottom_right = Coordinates {
+            x: isize::MIN,
+            y: isize::MIN,
+        };
+
+        for coords in all_coords {
+            top_left.x = std::cmp::min(coords.x, top_left.x);
+            top_left.y = std::cmp::min(coords.y, top_left.y);
+
+            bottom_right.x = std::cmp::max(coords.x, bottom_right.x);
+            bottom_right.y = std::cmp::max(coords.y, bottom_right.y);
+        }
+
+        Self {
+            top_left,
+            bottom_right: bottom_right + Coordinates { x: 1, y: 1 },
+        }
     }
 }
 

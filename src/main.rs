@@ -15,6 +15,7 @@ mod day10;
 mod day11;
 mod day12;
 mod day13;
+mod day14;
 mod day2;
 mod day3;
 mod day4;
@@ -66,6 +67,7 @@ fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn 
         11 => Box::new(day11::Day11::from_lines(lines)),
         12 => Box::new(day12::Day12::from_lines(lines)),
         13 => Box::new(day13::Day13::from_lines(lines)),
+        14 => Box::new(day14::Day14::from_lines(lines)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }
