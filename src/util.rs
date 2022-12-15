@@ -8,6 +8,10 @@ pub struct Coordinates {
 }
 
 impl Coordinates {
+    pub fn manhattan(&self) -> isize {
+        self.x.abs() + self.y.abs()
+    }
+
     pub fn direction(&self) -> Option<Direction> {
         match (self.x, self.y) {
             (0, y) if y < 0 => Some(Direction::Up),
