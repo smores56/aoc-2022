@@ -36,7 +36,7 @@ impl DaySolution for Day8 {
     fn part_two(&self) -> String {
         let all_coordinates = (1..(self.0.size().x - 1))
             .flat_map(|x| (1..(self.0.size().y - 1)).map(move |y| (x, y)))
-            .map(Coordinates::from);
+            .map(|(x, y)| Coordinates { x, y });
 
         all_coordinates
             .map(|coords| self.calculate_scenic_score(coords))
@@ -99,27 +99,13 @@ impl Day8 {
 fn starting_coordinates_for_direction(
     region_size: Coordinates,
     direction: Direction,
-) -> Box<dyn Iterator<Item = Coordinates>> {
-    match direction {
-        Direction::Up => Box::new(
-            (0..region_size.x)
-                .zip(std::iter::repeat(region_size.y - 1))
-                .map(Coordinates::from),
-        ),
-        Direction::Down => Box::new(
-            (0..region_size.x)
-                .zip(std::iter::repeat(0))
-                .map(Coordinates::from),
-        ),
-        Direction::Left => Box::new(
-            std::iter::repeat(region_size.x - 1)
-                .zip(0..region_size.y)
-                .map(Coordinates::from),
-        ),
-        Direction::Right => Box::new(
-            std::iter::repeat(0)
-                .zip(0..region_size.y)
-                .map(Coordinates::from),
-        ),
-    }
+) -> impl Iterator<Item = Coordinates> {
+    let coords_iter: Box<dyn Iterator<Item = (isize, isize)>> = match direction {
+        Direction::Up => Box::new((0..region_size.x).zip(std::iter::repeat(region_size.y - 1))),
+        Direction::Down => Box::new((0..region_size.x).zip(std::iter::repeat(0))),
+        Direction::Left => Box::new(std::iter::repeat(region_size.x - 1).zip(0..region_size.y)),
+        Direction::Right => Box::new(std::iter::repeat(0).zip(0..region_size.y)),
+    };
+
+    coords_iter.map(|(x, y)| Coordinates { x, y })
 }

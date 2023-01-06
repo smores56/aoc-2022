@@ -2,8 +2,12 @@
     slice_group_by,
     iter_array_chunks,
     array_chunks,
+    drain_filter,
     hash_drain_filter,
-    array_windows
+    array_windows,
+    iter_advance_by,
+    int_roundings,
+    once_cell
 )]
 
 use std::env;
@@ -17,9 +21,17 @@ mod day12;
 mod day13;
 mod day14;
 mod day15;
+mod day16;
+mod day17;
 mod day18;
+mod day19;
 mod day2;
 mod day20;
+mod day21;
+mod day22;
+mod day23;
+mod day24;
+mod day25;
 mod day3;
 mod day4;
 mod day5;
@@ -72,8 +84,16 @@ fn get_day_solution(day: usize, lines: impl Iterator<Item = String>) -> Box<dyn 
         13 => Box::new(day13::Day13::from_lines(lines)),
         14 => Box::new(day14::Day14::from_lines(lines)),
         15 => Box::new(day15::Day15::from_lines(lines)),
+        16 => Box::new(day16::Day16::from_lines(lines)),
+        17 => Box::new(day17::Day17::from_lines(lines)),
         18 => Box::new(day18::Day18::from_lines(lines)),
+        19 => Box::new(day19::Day19::from_lines(lines)),
         20 => Box::new(day20::Day20::from_lines(lines)),
+        21 => Box::new(day21::Day21::from_lines(lines)),
+        22 => Box::new(day22::Day22::from_lines(lines)),
+        23 => Box::new(day23::Day23::from_lines(lines)),
+        24 => Box::new(day24::Day24::from_lines(lines)),
+        25 => Box::new(day25::Day25::from_lines(lines)),
         _other => panic!("Day hasn't been solved yet"),
     }
 }

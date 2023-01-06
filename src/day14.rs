@@ -31,7 +31,8 @@ enum CaveBottom {
 
 impl Cave {
     fn from_lines(lines: &Vec<Vec<Coordinates>>, bottom: CaveBottom) -> Self {
-        let mut bounds = BoundingBox::for_coordinates(lines.iter().flat_map(|line| line));
+        let mut bounds =
+            BoundingBox::for_coordinates(lines.iter().flat_map(|line| line.iter().cloned()));
         if bottom == CaveBottom::Floor {
             bounds.bottom_right += Coordinates {
                 x: bounds.bottom_right.y,

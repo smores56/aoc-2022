@@ -75,15 +75,6 @@ impl std::ops::Mul<isize> for Coordinates {
     }
 }
 
-impl From<(isize, isize)> for Coordinates {
-    fn from(coordinates: (isize, isize)) -> Self {
-        Self {
-            x: coordinates.0,
-            y: coordinates.1,
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Matrix<T> {
     pub items: Vec<Vec<T>>,
@@ -106,7 +97,11 @@ impl<T> Matrix<T> {
     }
 
     pub fn in_bounds(&self, coords: Coordinates) -> bool {
-        coords.x >= 0 && coords.x < self.size().x && coords.y >= 0 && coords.y < self.size().y
+        BoundingBox {
+            top_left: Coordinates { x: 0, y: 0 },
+            bottom_right: self.size(),
+        }
+        .contains(coords)
     }
 
     pub fn neighbors(&self, coords: Coordinates) -> Vec<Coordinates> {
@@ -117,6 +112,20 @@ impl<T> Matrix<T> {
                     .filter(|new_coords| self.in_bounds(*new_coords))
             })
             .collect()
+    }
+
+    pub fn enumerate<'m>(&'m self) -> impl Iterator<Item = (Coordinates, &'m T)> {
+        self.items.iter().enumerate().flat_map(|(y, row)| {
+            row.iter().enumerate().map(move |(x, item)| {
+                (
+                    Coordinates {
+                        x: x as isize,
+                        y: y as isize,
+                    },
+                    item,
+                )
+            })
+        })
     }
 }
 
@@ -162,7 +171,7 @@ pub struct BoundingBox {
 }
 
 impl BoundingBox {
-    pub fn for_coordinates<'c>(all_coords: impl Iterator<Item = &'c Coordinates>) -> Self {
+    pub fn for_coordinates<'c>(all_coords: impl Iterator<Item = Coordinates>) -> Self {
         let mut top_left = Coordinates {
             x: isize::MAX,
             y: isize::MAX,
@@ -185,9 +194,16 @@ impl BoundingBox {
             bottom_right: bottom_right + Coordinates { x: 1, y: 1 },
         }
     }
+
+    pub fn contains(&self, coords: Coordinates) -> bool {
+        coords.x >= self.top_left.x
+            && coords.x < self.bottom_right.x
+            && coords.y >= self.top_left.y
+            && coords.y < self.bottom_right.y
+    }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Direction {
     Up,
     Down,
